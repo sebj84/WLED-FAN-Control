@@ -23,6 +23,11 @@
 #include "../usermods/sht/usermod_sht.h"
 #endif
 
+#ifdef USERMOD_DHT
+  #include "../usermods/DHT/usermod_dht.h"
+  #include <dht_nonblocking.h>
+#endif
+
 #ifdef USERMOD_SN_PHOTORESISTOR
   #include "../usermods/SN_Photoresistor/usermod_sn_photoresistor.h"
 #endif
@@ -75,10 +80,6 @@
 
 #ifdef USERMOD_AUTO_SAVE
   #include "../usermods/usermod_v2_auto_save/usermod_v2_auto_save.h"
-#endif
-
-#ifdef USERMOD_DHT
-  #include "../usermods/DHT/usermod_dht.h"
 #endif
 
 #ifdef USERMOD_VL53L0X_GESTURES
