@@ -1,6 +1,6 @@
 #pragma once
 
-#if /*!defined(USERMOD_DALLASTEMPERATURE) || !defined(USERMOD_SHT) ||*/ !defined(USERMOD_DHT)
+#if !defined(USERMOD_DALLASTEMPERATURE) && !defined(USERMOD_SHT) && !defined(USERMOD_DHT)
 #error The "PWM fan" usermod requires "Dallas Temeprature" or "SHT" usermod to function properly.
 #endif
 
@@ -40,11 +40,11 @@ class PWMFanUsermod : public Usermod {
     #endif
     bool lockFan = false;
 
-/*  #ifdef USERMOD_DALLASTEMPERATURE
+    #ifdef USERMOD_DALLASTEMPERATURE
     UsermodTemperature* tempUM;
     #elif defined(USERMOD_SHT)
-    ShtUsermod* tempUM;*/
-    #ifdef USERMOD_DHT
+    ShtUsermod* tempUM;
+    #elif USERMOD_DHT
     UsermodDHT* tempUM;
     #endif
 

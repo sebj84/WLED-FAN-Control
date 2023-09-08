@@ -11,6 +11,11 @@
  */
 //#include "../usermods/EXAMPLE_v2/usermod_v2_example.h"
 
+#ifdef USERMOD_DHT
+  #include "../usermods/DHT/usermod_dht.h"
+  #include <dht_nonblocking.h>
+#endif
+
 #ifdef USERMOD_BATTERY
   #include "../usermods/Battery/usermod_v2_Battery.h"
 #endif
@@ -21,11 +26,6 @@
 
 #ifdef USERMOD_SHT
 #include "../usermods/sht/usermod_sht.h"
-#endif
-
-#ifdef USERMOD_DHT
-  #include "../usermods/DHT/usermod_dht.h"
-  #include <dht_nonblocking.h>
 #endif
 
 #ifdef USERMOD_SN_PHOTORESISTOR
