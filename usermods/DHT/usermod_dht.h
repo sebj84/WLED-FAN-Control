@@ -63,7 +63,7 @@ class UsermodDHT : public Usermod {
   private:
     unsigned long nextReadTime = 0;
     unsigned long lastReadTime = 0;
-    float humidity, temperature = -100;
+    float humidity, temperature = -100; //init hum and temp -100 for PWM FAN mod to run at 100% fan speed at start
     bool initializing = true;
     bool disabled = false;
     #ifdef USERMOD_DHT_MQTT
