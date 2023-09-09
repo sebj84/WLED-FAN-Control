@@ -44,7 +44,7 @@ class PWMFanUsermod : public Usermod {
     UsermodTemperature* tempUM;
     #elif defined(USERMOD_SHT)
     ShtUsermod* tempUM;
-    #elif USERMOD_DHT
+    #elif defined(USERMOD_DHT)
     UsermodDHT* tempUM;
     #endif
 

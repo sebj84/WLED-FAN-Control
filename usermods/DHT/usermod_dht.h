@@ -96,19 +96,7 @@ class UsermodDHT : public Usermod {
     /*
      * API calls the enable data exchange between WLED modules
      */
-    inline float getTemperatureC() { 
-      float tempC;
-      if (dht_sensor.measure(&tempC, &humidity)) {
-        #ifdef USERMOD_DHT_CELSIUS
-        temperature = tempC;
-        #else
-        temperature = tempC * 9 / 5 + 32;
-        #endif
-      }
-    DEBUG_PRINT(F("TESTESTESTESTEES temp : "));
-    DEBUG_PRINTLN(temperature);
-    return temperature;
-    }
+    inline float getTemperatureC() { return temperature; }
 
     void loop() {
       if (disabled) {
