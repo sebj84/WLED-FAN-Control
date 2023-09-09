@@ -63,7 +63,7 @@ class UsermodDHT : public Usermod {
   private:
     unsigned long nextReadTime = 0;
     unsigned long lastReadTime = 0;
-    float humidity, temperature = 0;
+    float humidity, temperature = -100;
     bool initializing = true;
     bool disabled = false;
     #ifdef USERMOD_DHT_MQTT
@@ -92,11 +92,6 @@ class UsermodDHT : public Usermod {
       nextResetStatsTime = millis() + 60*60*1000;
       #endif
     }
-
-    /*
-     * API calls the enable data exchange between WLED modules
-     */
-    inline float getTemperatureC() { return temperature; }
 
     void loop() {
       if (disabled) {
@@ -249,4 +244,11 @@ class UsermodDHT : public Usermod {
       return USERMOD_ID_DHT;
     }
 
+    /*
+     * API calls the enable data exchange between WLED modules
+     */
+    inline float getTemperatureC() 
+    { 
+      return temperature; 
+    }
 };

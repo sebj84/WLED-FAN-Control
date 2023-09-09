@@ -164,7 +164,7 @@ class PWMFanUsermod : public Usermod {
       int pwmStep = ((100 - minPWMValuePct) * newPWMvalue) / (7*100);
       int pwmMinimumValue = (minPWMValuePct * newPWMvalue) / 100;
 
-      if ((temp == NAN) || (temp <= -100.0)) {
+      if ((temp == NAN) || (temp <= -100.0) || (temp >= 130.0)) {
         DEBUG_PRINTLN(F("WARNING: no temperature value available. Cannot do temperature control. Will set PWM fan to 255."));
       } else if (difftemp <= 0.0) {
         // Temperature is below target temperature. Run fan at minimum speed.
@@ -182,6 +182,8 @@ class PWMFanUsermod : public Usermod {
       } else if (difftemp <= 3.0) {
         newPWMvalue = pwmMinimumValue + 6*pwmStep;
       }
+      DEBUG_PRINTLN((temp));
+      DEBUG_PRINTLN((newPWMvalue));
       updateFanSpeed(newPWMvalue);
     }
 
@@ -195,6 +197,8 @@ class PWMFanUsermod : public Usermod {
       tempUM = (UsermodTemperature*) usermods.lookup(USERMOD_ID_TEMPERATURE);
       #elif defined(USERMOD_SHT)
       tempUM = (ShtUsermod*) usermods.lookup(USERMOD_ID_SHT);
+      #elif defined(USERMOD_DHT)
+      tempUM = (UsermodDHT*) usermods.lookup(USERMOD_ID_DHT);      
       #endif
       initTacho();
       initPWMfan();
