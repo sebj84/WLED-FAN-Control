@@ -249,6 +249,10 @@ class UsermodDHT : public Usermod {
      */
     inline float getTemperatureC() 
     { 
-      return temperature; 
+      float tempC;
+      if (dht_sensor.measure(&tempC, &humidity)) {
+        temperature = tempC;
+      }
+      return temperature;
     }
 };

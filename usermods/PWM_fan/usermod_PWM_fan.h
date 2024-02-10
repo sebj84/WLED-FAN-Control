@@ -3,6 +3,9 @@
 #if !defined(USERMOD_DALLASTEMPERATURE) && !defined(USERMOD_SHT) && !defined(USERMOD_DHT)
 #error The "PWM fan" usermod requires "Dallas Temeprature" or "SHT" usermod to function properly.
 #endif
+#if !defined(WLED_ENABLE_MQTT)
+#error "This user mod requires MQTT to be enabled."
+#endif
 
 #include "wled.h"
 
@@ -76,7 +79,7 @@ class PWMFanUsermod : public Usermod {
       }
       pinMode(tachoPin, INPUT);
       digitalWrite(tachoPin, HIGH);
-      attachInterrupt(digitalPinToInterrupt(tachoPin), rpm_fan, FALLING);
+      attachInterrupt(digitalPinToInterrupt(tachoPin), rpm_fan, RISING);
       DEBUG_PRINTLN(F("Tacho sucessfully initialized."));
     }
 
@@ -101,7 +104,7 @@ class PWMFanUsermod : public Usermod {
       // reset counter
       counter_rpm = 0; 
       // attach interrupt again
-      attachInterrupt(digitalPinToInterrupt(tachoPin), rpm_fan, FALLING);
+      attachInterrupt(digitalPinToInterrupt(tachoPin), rpm_fan, RISING);
     }
 
     // https://randomnerdtutorials.com/esp32-pwm-arduino-ide/
