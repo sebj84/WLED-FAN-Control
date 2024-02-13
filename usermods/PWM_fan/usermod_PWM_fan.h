@@ -37,7 +37,7 @@ class PWMFanUsermod : public Usermod {
     bool initDone = false;
     bool enabled = true;
     unsigned long msLastTachoMeasurement = 0;
-    uint16_t last_rpm = 0;
+    uint32_t last_rpm = 0;
     #ifdef ARDUINO_ARCH_ESP32
     uint8_t pwmChannel = 255;
     #endif
@@ -49,6 +49,11 @@ class PWMFanUsermod : public Usermod {
     ShtUsermod* tempUM;
     #elif defined(USERMOD_DHT)
     UsermodDHT* tempUM;
+    #endif
+
+    #ifdef USERMOD_PWM_FAN_MQTT
+    char pwmFanMqttTopic[64];
+    size_t pwmFanMqttTopicLen;
     #endif
 
     // configurable parameters
@@ -203,6 +208,10 @@ class PWMFanUsermod : public Usermod {
       #elif defined(USERMOD_DHT)
       tempUM = (UsermodDHT*) usermods.lookup(USERMOD_ID_DHT);      
       #endif
+      #ifdef USERMOD_PWM_FAN_MQTT
+      sprintf(pwmFanMqttTopic, "%s/pwm_fan", mqttDeviceTopic);
+      pwmFanMqttTopicLen = strlen(pwmFanMqttTopic);
+      #endif
       initTacho();
       initPWMfan();
       updateFanSpeed((minPWMValuePct * 255) / 100); // inital fan speed
@@ -224,6 +233,19 @@ class PWMFanUsermod : public Usermod {
 
       updateTacho();
       if (!lockFan) setFanPWMbasedOnTemperature();
+
+      //MQTT config for fan speed reading
+      #ifdef USERMOD_PWM_FAN_MQTT
+      if (WLED_MQTT_CONNECTED) {
+        char buff[10];
+
+        strcpy(pwmFanMqttTopic + pwmFanMqttTopicLen, "/wled_FAN_RPM");
+        sprintf(buff, "%d", (int)last_rpm);
+        mqtt->publish(pwmFanMqttTopic, 0, false, buff);
+        pwmFanMqttTopic[pwmFanMqttTopicLen] = '\0';
+      }
+      #undef FLOAT_PREC
+      #endif
     }
 
     /*
